@@ -1,0 +1,31 @@
+databaseChangeLog:
+  - changeSet:
+      id: users_index
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/indexes/users_index.sql
+            stripComments: true
+      runOnChange: true
+  - changeSet:
+      id: user_profile_index
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/indexes/user_profile_index.sql
+            stripComments: true
+      runOnChange: true
+  - changeSet:
+      id: favourites_index
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/indexes/favourites_index.sql
+            stripComments: true
+      runOnChange: true

@@ -1,0 +1,74 @@
+databaseChangeLog:
+  - changeSet:
+      id: category
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/tables/category.sql
+            stripComments: true
+      runOnChange: true
+  - include:
+      file: db/tables/user/_changelog.yaml
+  - changeSet:
+      id: event_log
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/tables/event_log.sql
+            stripComments: true
+      runOnChange: true
+
+  - changeSet:
+      id: message
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/tables/message.sql
+            stripComments: true
+      runOnChange: true
+  - changeSet:
+      id: calendar
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/tables/calendar.sql
+            stripComments: true
+      runOnChange: true
+  - changeSet:
+      id: appointment
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/tables/appointment.sql
+            stripComments: true
+      runOnChange: true
+  - changeSet:
+      id: review
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/tables/review.sql
+            stripComments: true
+      runOnChange: true
+  - changeSet:
+      id: review_attachment
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/tables/review_attachment.sql
+            stripComments: true
+      runOnChange: true

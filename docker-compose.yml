@@ -1,0 +1,10 @@
+version: '2'
+services:
+  postgresql:
+    image: postgres:15.1-alpine
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=123456
+    ports:
+      - "35432:5432"
+    restart: on-failure

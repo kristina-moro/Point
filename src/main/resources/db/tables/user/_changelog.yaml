@@ -1,0 +1,61 @@
+databaseChangeLog:
+  - changeSet:
+      id: user
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/tables/user/user.sql
+            stripComments: true
+      runOnChange: true
+  - changeSet:
+      id: request
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/tables/user/request.sql
+            stripComments: true
+      runOnChange: true
+  - changeSet:
+      id: user_category
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/tables/user/user_category.sql
+            stripComments: true
+      runOnChange: true
+  - changeSet:
+      id: user_profile
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/tables/user/user_profile.sql
+            stripComments: true
+      runOnChange: true
+  - changeSet:
+      id: user_portfolio
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/tables/user/user_portfolio.sql
+            stripComments: true
+      runOnChange: true
+  - changeSet:
+      id: favourites
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/tables/user/favourites.sql
+            stripComments: true
+      runOnChange: true

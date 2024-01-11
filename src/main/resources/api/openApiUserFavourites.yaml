@@ -1,0 +1,105 @@
+openapi: 3.0.0
+info:
+  title: user-favourites
+  description: "Избранное пользователей"
+  version: 0.0.0
+
+paths:
+  /user/favourites:
+    post:
+      tags:
+        - UserFavourites
+      summary: 'Добавить исполнителя в избранное'
+      operationId: addFavourites
+      requestBody:
+        description: ""
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddFavouritesRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+    get:
+      tags:
+        - UserFavourites
+      summary: 'Избранное пользователя'
+      operationId: getFavourites
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetFavouritesResponse'
+
+  /user/favourites/{performer_id}:
+    delete:
+      tags:
+        - UserFavourites
+      summary: 'Удалить исполнителя из избранного'
+      operationId: deleteFavourites
+      parameters:
+        - name: performer_id
+          in: path
+          required: true
+          description: "Идентификатор пользователя-исполнителя (example: d1269650-1ac7-46b4-878a-5f8a8ae8445b)"
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+components:
+  schemas:
+    AddFavouritesRequest:
+      type: object
+      description: "Реквест на добавление исполнителя в избранное"
+      properties:
+        performer_id:
+          type: string
+          format: uuid
+          description: "Идентификатор пользователя-исполнителя"
+          example: "37e24612-6c35-4736-aeca-158697dcb51c"
+        name:
+          type: string
+          description: "Наименование исполнителя для отображения в интерфейсе"
+          example: "Тренер года"
+
+    GetFavouritesResponse:
+      description: "Избранное пользователя"
+      type: array
+      items:
+        $ref: '#/components/schemas/Favourites'
+
+    Favourites:
+      type: object
+      description: "Избранный исполнитель"
+      properties:
+        id:
+          type: integer
+          description: "Идентификатор"
+          example: "13"
+        performer_id:
+          type: string
+          format: uuid
+          description: "Идентификатор пользователя-исполнителя"
+          example: "5b7d3f89-5276-4790-a3e1-ed8248e6c6dd"
+        name:
+          type: string
+          description: "Имя исполнителя для отображения в личном кабинете"
+          example: "Тренер года"

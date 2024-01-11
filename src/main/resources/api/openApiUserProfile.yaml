@@ -1,0 +1,289 @@
+openapi: 3.0.0
+info:
+  title: user-profile
+  description: "Профиль пользователей"
+  version: 0.0.0
+
+paths:
+  /user/{user_id}/profile:
+    get:
+      tags:
+        - UserProfile
+      summary: 'Профиль пользователя'
+      operationId: getProfile
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: "Идентификатор пользователя (example: d1269650-1ac7-46b4-878a-5f8a8ae8445b)"
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetProfileResponse'
+
+  /user/set-name:
+    post:
+      tags:
+        - UserProfile
+      summary: 'Редактировать имя пользователя'
+      operationId: setName
+      requestBody:
+        description: "Тело запроса для редактирования атрибута"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePropertyRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+  /user/set-language:
+    post:
+      tags:
+        - UserProfile
+      summary: 'Установить язык'
+      operationId: setLanguage
+      parameters:
+        - name: lang
+          in: query
+          description: " "
+          schema:
+            $ref: '#/components/schemas/LanguageEnum'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+  /user/set-description:
+    post:
+      tags:
+        - UserProfile
+      summary: 'Установить краткое описание'
+      operationId: setDescription
+      requestBody:
+        description: "Тело запроса для редактирования атрибута"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePropertyRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+  /user/set-about:
+    post:
+      tags:
+        - UserProfile
+      summary: 'Установить полное описание'
+      operationId: setAbout
+      requestBody:
+        description: "Тело запроса для редактирования атрибута"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePropertyRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+  /user/set-address:
+    post:
+      tags:
+        - UserProfile
+      summary: 'Установить адрес (example: 5th. Avenue)'
+      operationId: setAddress
+      requestBody:
+        description: "Тело запроса для редактирования атрибута"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePropertyRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+  /user/avatar:
+    post:
+      tags:
+        - UserProfile
+      summary: 'Установить изображение профиля'
+      operationId: setAvatar
+      requestBody:
+        content:
+          image/jpg:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+    delete:
+      tags:
+        - UserProfile
+      summary: 'Удалить изображение профиля'
+      operationId: deleteAvatar
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+  /user/set-opening-hours:
+    post:
+      tags:
+        - UserProfile
+      summary: 'Установить часы работы (example: 09:00-18:00)'
+      operationId: setOpeningHours
+      requestBody:
+        description: "Тело запроса для редактирования атрибута"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePropertyRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+  /user/set-gps:
+    post:
+      tags:
+        - UserProfile
+      summary: 'Установить GPS координаты (example: 48.89534081509048, 2.491445617284558)'
+      operationId: setGps
+      requestBody:
+        description: "Тело запроса для редактирования атрибута"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePropertyRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+components:
+  schemas:
+    UpdatePropertyRequest:
+      type: object
+      description: "Реквест на обновление значения атрибута"
+      properties:
+        value:
+          type: string
+          description: "Новое значение"
+          example: "..."
+
+    GetProfileResponse:
+      description: "Профиль пользователя"
+      properties:
+        id:
+          type: string
+          format: uuid
+          description: "Идентификатор"
+          example: "5b7d3f89-5276-4790-a3e1-ed8248e6c6dd"
+        name:
+          type: string
+          description: "Имя"
+          example: "Christina"
+        lang:
+          type: string
+          description: "Язык"
+          example: "EN"
+        phone_number:
+          type: string
+          description: "Номер телефона"
+          example: "+7 925 1234567"
+        email:
+          type: string
+          description: "Номер телефона"
+          example: "+7 925 1234567"
+        avatar:
+          type: string
+          format: byte
+        description:
+          type: string
+          description: "Краткое описание"
+          example: "Няня со стажем ... "
+        about:
+          type: string
+          description: "Описание"
+          example: "Долгие годы работала на производстве начальником отдела кадров,в канцелярии отделения полиции,в детском саду и в школе .и.т.д.10 лет работаю няней в семьях.Имею 4 воспитанника.Люблю детей🌹"
+        address:
+          type: string
+          description: "Адрес исполнителя"
+          example: "5th Avenue..."
+        gps:
+          type: string
+          description: "Адрес исполнителя"
+          example: "48.89534081509048, 2.491445617284558"
+        opening_hours:
+          type: string
+          description: "Рабочие часы"
+          example: "09:00-18:00"
+
+    LanguageEnum:
+      type: string
+      description: "Поддерживаемые языки"
+      enum: [ RU, EN, FR ]
+      x-enum-varnames: [ RU, EN, FR ]

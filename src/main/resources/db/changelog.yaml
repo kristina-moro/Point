@@ -1,0 +1,9 @@
+databaseChangeLog:
+  - include:
+      file: db/temp/_changelog.yaml
+  - include:
+      file: db/tables/_changelog.yaml
+  - include:
+      file: db/indexes/_changelog.yaml
+  - include:
+      file: db/data/_changelog.yaml

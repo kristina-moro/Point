@@ -1,0 +1,57 @@
+openapi: 3.0.0
+info:
+  title: dictionary
+  description: "Справочники"
+  version: 0.0.0
+
+paths:
+  /dictionary/category/{category_id}:
+    get:
+      tags:
+        - Dictionary
+      summary: 'Каталог услуг'
+      operationId: getCategory
+      parameters:
+        - name: category_id
+          in: path
+          required: true
+          description: "Идентификатор категории (example: 499)"
+          schema:
+            type: integer
+            example: 499
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCategoryResponse'
+
+components:
+  schemas:
+    GetCategoryResponse:
+      description: "Список категорий услуг"
+      type: array
+      items:
+        $ref: '#/components/schemas/Category'
+
+    Category:
+      description: "Категория услуг"
+      type: object
+      properties:
+        id:
+          type: integer
+          description: "Идентификатор"
+          example: "499"
+        name:
+          type: string
+          description: "Название"
+          example: "Услуги няни"
+        description:
+          type: string
+          description: "Подробное описание. Наверно не нужно, удалить"
+          example: "Some text"
+        parentId:
+          type: integer
+          description: "Идентификатор родительской категории"
+          example: "4"

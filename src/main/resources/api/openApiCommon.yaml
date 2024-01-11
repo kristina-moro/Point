@@ -1,0 +1,46 @@
+openapi: 3.0.0
+info:
+  title: Common components
+  description: "Общие компоненты"
+  version: 0.0.0
+
+paths: { }
+
+components:
+  schemas:
+    Pagination:
+      type: object
+      description: "Pagination"
+      properties:
+        total:
+          type: integer
+          description: "Всего записей"
+          example: 29
+      required:
+        - total
+
+    ErrorMessage:
+      type: object
+      description: "Сообщение об ошибке"
+      properties:
+        code:
+          type: string
+          description: "Код ошибки"
+          example: "VALIDATION_ERROR"
+        message:
+          type: string
+          description: "Описание ошибки"
+          example: "Required field email is missing"
+      required:
+        - code
+        - message
+
+    ###Enumerated types
+
+    SortDirection:
+      type: string
+      description: "Направление сортировки"
+      default: 'ASC'
+      enum:
+        - ASC  #в порядке возрастания
+        - DESC #в порядке убывания

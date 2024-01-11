@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProperty scope="local" name="LOGGING_MODE" source="logging.mode" defaultValue="json"/>
+
+    <if condition='property("LOGGING_MODE").equals("text")'>
+        <then>
+            <include resource="org/springframework/boot/logging/logback/base.xml"/>
+
+            <root level="INFO">
+                <appender-ref ref="CONSOLE" />
+                <appender-ref ref="FILE" />
+            </root>
+        </then>
+
+        <else>
+            <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
+
+            <springProperty scope="context" name="app-name" source="application.title" defaultValue="unknown"/>
+            <springProperty scope="context" name="app-version" source="application.version" defaultValue="unknown"/>
+
+            <appender name="json" class="ch.qos.logback.core.ConsoleAppender">
+                <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+            </appender>
+
+            <root level="INFO">
+                <appender-ref ref="json"/>
+            </root>
+        </else>
+    </if>
+</configuration>

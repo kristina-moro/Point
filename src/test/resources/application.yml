@@ -1,0 +1,26 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://localhost:35432/postgres?currentSchema=billing_payment_gateway
+    username: postgres
+    password: 123456
+    pool:
+      enabled: true
+  liquibase:
+    url: jdbc:postgresql://localhost:35432/postgres?currentSchema=billing_payment_gateway
+    user: postgres
+    password: 123456
+    enabled: true
+    change-log: "classpath:db/changelog.yaml"
+  main:
+    allow-circular-references: true
+
+security:
+  public-key: ${SECURITY_PUBLIC_KEY}
+  private-key: ${SECURITY_PRIVATE_KEY}
+
+full-check-interval-in-cron: 59 * * * * *
+single-check-interval-in-cron: 5 * * * * *
+
+
+logging:
+  mode: "text"

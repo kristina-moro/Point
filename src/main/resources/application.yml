@@ -1,0 +1,82 @@
+spring:
+  application:
+    name: "point"
+  jackson:
+    serialization:
+      write-durations-as-timestamps: false
+  r2dbc:
+    url: ${DB_URL:r2dbc:postgresql://localhost:5432/point-test}
+    username: ${DB_USERNAME:point}
+    password: ${DB_PASSWORD:point}
+    pool:
+      enabled: true
+  datasource:
+    jdbcUrl: ${DB_URL:jdbc:postgresql://localhost:5432/point-test}
+    username: ${DB_USERNAME:point}
+    password: ${DB_PASSWORD:point}
+    driver-class-name: org.postgresql.Driver
+  liquibase:
+    enabled: true
+    change-log: "classpath:db/changelog.yaml"
+    url: ${LIQUIBASE_URL:jdbc:postgresql://localhost:5432/point-test}
+    user: ${DB_USERNAME:point}
+    password: ${DB_PASSWORD:point}
+    contexts: ${SPRING_PROFILES_ACTIVE}
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: chrismoro28@gmail.com
+    password: bqvkhoizgpoivlth
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        debug: true
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+          ssl:
+            protocols: TLSv1.2
+            trust: smtp.gmail.com
+
+  security:
+    oauth2:
+      client:
+        provider:
+          oidc:
+            issuer-uri: ${KEYCLOAK_ISSUER_URI:https://sso.dev.idynsys.org/realms/b2b}
+        registration:
+          oidc:
+            client-id: ${KEYCLOAK_CLIENT_ID:b2b_client}
+            client-secret: ${KEYCLOAK_CLIENT_SECRET:lPHaVcoO7HMnOxCgY9kW1HJ2yE9uEpF6} # todo: VAULT?
+            scope: openid, profile, email, offline_access, message.read, message.write # last one for refresh tokens
+            authorization-grant-type: authorization_code
+            redirect_uri: ${KEYCLOAK_REDIRECT_URI:https://sso.dev.idynsys.org/login/oauth2/code/keycloak}
+
+point:
+  base-url: http://localhost:8080/
+  portfolio-max-size: 3
+
+security:
+  private-key: ${SECURITY_PRIVATE_KEY}
+
+
+logging:
+  mode: "json"
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  liquibase:
+    contexts: local
+
+security:
+  disable: true
+
+logging:
+  mode: "text"
+

@@ -1,0 +1,168 @@
+openapi: 3.0.0
+info:
+  title: user-portfolio
+  description: "Портфолио пользователей"
+  version: 0.0.0
+
+paths:
+  /user/image:
+    post:
+      tags:
+        - UserPortfolio
+      summary: 'Загрузить изображение'
+      operationId: uploadImage
+      requestBody:
+        content:
+          image/jpg:
+            schema:
+              type: string
+              format: binary
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadImageResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+  /user/edit-info:
+    post:
+      tags:
+        - UserPortfolio
+      summary: 'Редактировать порядок и описание изображений'
+      operationId: editDescriptionAndOrder
+      requestBody:
+        description: "Тело запроса для создания новой платежной операции"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditPortfolioRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+  /user/image/{id}:
+    delete:
+      tags:
+        - UserPortfolio
+      summary: 'Удалить изображение'
+      operationId: deleteImage
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "Идентификатор изображения"
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+  /user/{user_id}/portfolio:
+    get:
+      tags:
+        - UserPortfolio
+      summary: 'Портфолио пользователя'
+      operationId: getPortfolio
+      parameters:
+        - name: user_id
+          in: path
+          required: true
+          description: "Идентификатор пользователя (example: d1269650-1ac7-46b4-878a-5f8a8ae8445b)"
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetPortfolioResponse'
+
+
+components:
+  schemas:
+    UploadImageResponse:
+      type: object
+      description: " "
+      properties:
+        id:
+          type: integer
+          description: "Идентификатор изображения"
+          example: "148"
+
+    EditPortfolioRequest:
+      description: "Список изображений в портфолио"
+      type: array
+      items:
+        $ref: '#/components/schemas/ImageInformation'
+
+    ImageInformation:
+      type: object
+      description: " "
+      properties:
+        id:
+          type: integer
+          description: "Идентификатор изображения"
+          example: "148"
+        description:
+          type: string
+          description: "Описание"
+          example: "Техника AirTouch"
+        sort_order:
+          type: integer
+          description: "Порядок сортировки"
+          example: "2"
+
+    GetPortfolioResponse:
+      type: object
+      description: " "
+      properties:
+        items:
+          $ref: '#/components/schemas/Portfolio'
+
+    Portfolio:
+      description: "Портфолио"
+      type: array
+      items:
+        $ref: '#/components/schemas/PortfolioItem'
+
+    PortfolioItem:
+      type: object
+      description: "Изображение из портфолио"
+      properties:
+        id:
+          type: integer
+          description: "Идентификатор"
+          example: "148"
+        image:
+          type: string
+          format: byte
+        description:
+          type: string
+          description: "Описание"
+          example: "Техника AirTouch"
+        sort_order:
+          type: integer
+          description: "Порядковый номер для сортировки"
+          example: "2"

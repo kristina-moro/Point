@@ -1,0 +1,236 @@
+openapi: 3.0.0
+info:
+  title: user
+  description: "Пользователи"
+  version: 0.0.0
+
+paths:
+  /user:
+    post:
+      tags:
+        - User
+      summary: 'Создать аккаунт пользователя'
+      operationId: addUser
+      requestBody:
+        description: "Тело запроса для создания новой платежной операции"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddUserRequest'
+      responses:
+        '200':
+          description: OK
+
+  /user/confirm-email:
+    post:
+      tags:
+        - User
+      summary: 'Подтвердить адрес электронной почты'
+      operationId: confirmEmail
+      parameters:
+        - name: request_id
+          in: query
+          required: true
+          description: "Идентификатор реквеста (example: 7fc186c8-5ccd-412f-aa84-7d418d995b83)"
+          schema:
+            type: string
+            format: uuid
+            example: "7fc186c8-5ccd-412f-aa84-7d418d995b83"
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+  /user/auth:
+    post:
+      tags:
+        - User
+      summary: 'Аутентификация и авторизация пользователя'
+      operationId: auth
+      requestBody:
+        description: "Тело запроса для создания новой платежной операции"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthRequest'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthResponse'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+  /user/set-password:
+    post:
+      tags:
+        - User
+      summary: 'Сменить пароль пользователя'
+      operationId: setPassword
+      requestBody:
+        description: "Тело запроса для редактирования атрибута"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePasswordRequest'
+      responses:
+        '200':
+          description: OK
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: './openApiCommon.yaml#/components/schemas/ErrorMessage'
+
+  /user/{id}/event-log:
+    get:
+      tags:
+        - User
+      summary: 'Лог событий'
+      operationId: getEventLog
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: "Идентификатор пользователя (example: d1269650-1ac7-46b4-878a-5f8a8ae8445b)"
+          schema:
+            type: string
+            format: uuid
+        - name: page
+          in: query
+          description: "Pagination: номер страницы"
+          schema:
+            type: integer
+            default: 1
+        - name: limit
+          in: query
+          description: "Pagination: количество элементов на странице"
+          schema:
+            type: integer
+            default: 20
+        - name: sort_column
+          in: query
+          description: "Pagination: атрибут в теле ответа, по которому сортируются записи"
+          schema:
+            $ref: '#/components/schemas/EventLogSortColumnEnum'
+        - name: sort_direction
+          in: query
+          description: 'Pagination: направление сортировки'
+          schema:
+            $ref: './openApiCommon.yaml#/components/schemas/SortDirection'
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetEventLogResponse'
+
+components:
+  schemas:
+    AddUserRequest:
+      type: object
+      description: "Реквест на создание аккаунта пользователя"
+      properties:
+        name:
+          type: string
+          description: "Имя для отображения в интерфейсе"
+          example: "Christina"
+        login:
+          type: string
+          description: "Login (Уникальный идентификатор пользователя - email)"
+          example: "ms.kristina.moro@gmail.com"
+        password:
+          type: string
+          description: "Password"
+          example: "top-secret"
+
+    AuthRequest:
+      type: object
+      description: "Аутентификация по логину и паролю"
+      properties:
+        login:
+          type: string
+          description: "Login"
+          example: "ms.kristina.moro@gmail.com"
+        password:
+          type: string
+          description: "Password"
+          example: "top-secret"
+
+    AuthResponse:
+      description: "Token"
+      type: object
+      properties:
+        token:
+          type: string
+          description: "Token"
+          example: "AbCdEf123456"
+
+    GetEventLogResponse:
+      type: object
+      description: " "
+      properties:
+        items:
+          $ref: '#/components/schemas/EventLog'
+        total:
+          type: integer
+          description: "Всего записей, соответствующих запросу"
+          example: 29
+
+    EventLog:
+      description: "Список событий в логе"
+      type: array
+      items:
+        $ref: '#/components/schemas/EventLogRecord'
+
+    EventLogRecord:
+      type: object
+      description: "Событие из лога пользователя"
+      properties:
+        id:
+          type: integer
+          description: "Идентификатор"
+          example: "1"
+        event_type:
+          type: string
+          description: "Тип события"
+          example: "Изменено имя пользователя"
+        note:
+          type: string
+          description: "Доп. информация"
+          example: "{ old_value: helene }"
+        datetime:
+          description: "Дата события"
+          type: string
+          format: date-time
+
+    UpdatePasswordRequest:
+      type: object
+      description: "Реквест на обновление пароля"
+      properties:
+        value:
+          type: string
+          description: "Новый пароль"
+          example: "top-secret-2"
+
+    EventLogSortColumnEnum:
+      type: string
+      description: "Поле сортировки в методе getEventLog"
+      enum: [ datetime ]
+      x-enum-varnames: [ datetime ]

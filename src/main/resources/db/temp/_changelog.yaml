@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - changeSet:
+      id: temporal
+      author: magenta
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/temp/temporal.sql
+            stripComments: true
+      runOnChange: true

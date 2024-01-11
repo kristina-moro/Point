@@ -1,0 +1,24 @@
+databaseChangeLog:
+  - changeSet:
+      id: data
+      author: magenta
+      context: dev, test
+      changes:
+        - sqlFile:
+            endDelimiter: \n-
+            splitStatements: true
+            path: db/data/data.sql
+            stripComments: true
+      dbms: postgresql
+      runOnChange: true
+  - changeSet:
+        id: category
+        author: magenta
+        changes:
+            - sqlFile:
+                  endDelimiter: \n-
+                  splitStatements: true
+                  path: db/data/category.sql
+                  stripComments: true
+        dbms: postgresql
+        runOnChange: true
